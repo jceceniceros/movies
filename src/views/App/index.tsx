@@ -1,3 +1,5 @@
+import { MoviesList } from 'src/components/MoviesList';
+
 import styles from './styles.module.css';
 
 function App() {
@@ -8,9 +10,7 @@ function App() {
         <p>A long time ago, in a galaxy far, far away...</p>
       </div>
 
-      <div className={styles.List}>
-        <h2>Movie List:</h2>
-      </div>
+      <MoviesList />
     </div>
   );
 }

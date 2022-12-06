@@ -9,10 +9,3 @@
   color: #ff6;
   transform: perspective(200px) rotateX(30deg);
 }
-
-.List {
-  color: #fff;
-  margin: 0 auto;
-  text-align: left;
-  width: 90%;
-}

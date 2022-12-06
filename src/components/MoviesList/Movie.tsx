@@ -31,7 +31,7 @@ const Movie: React.FC<MovieProps> = (props) => {
   const [characters, setCharacters] = useState<string[]>([]);
 
   useEffect(() => {
-    if (props.showCharacters) {
+    if (props.showCharacters && characters.length === 0) {
       const charactersPromises = props.characters.map((characterUrl) =>
         fetch(characterUrl).then((response) => response.json())
       );
@@ -41,7 +41,7 @@ const Movie: React.FC<MovieProps> = (props) => {
         .then((characters) => setCharacters(characters))
         .catch((error) => console.error(error));
     }
-  }, [props.showCharacters]);
+  }, [props.showCharacters, props.characters, characters]);
 
   return (
     <li>

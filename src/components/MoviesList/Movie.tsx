@@ -1,26 +1,58 @@
+import { useState, useEffect } from 'react';
+
+import { CharactersList } from 'src/components/CharactersList';
+
 export interface MovieModel {
-  title: String,
-  episode_id: Number,
-  opening_crawl: String,
-  director: String,
-  producer: String,
-  release_date: String,
-  characters: [],
-  planets: [],
-  starships: [],
-  vehicles: [],
-  species: [],
-  created: String,
-  edited: String,
-  url: String
+  title: string;
+  episode_id: number;
+  opening_crawl: string;
+  director: string;
+  producer: string;
+  release_date: string;
+  characters: string[];
+  planets: string[];
+  starships: string[];
+  vehicles: string[];
+  species: string[];
+  created: string;
+  edited: string;
+  url: string;
 }
 
-interface MovieProps {
-  title: String
+export interface MovieProps {
+  title: string;
+  episodeId: number;
+  characters: string[];
+  showCharacters: boolean;
+  onClickButton: () => void;
 }
 
-const Movie: React.FC<MovieProps> = (props) => <li>{props.title}</li>;
+const Movie: React.FC<MovieProps> = (props) => {
+  const [characters, setCharacters] = useState<string[]>([]);
 
-export {
-  Movie,
-}
+  useEffect(() => {
+    if (props.showCharacters) {
+      const charactersPromises = props.characters.map((characterUrl) =>
+        fetch(characterUrl).then((response) => response.json())
+      );
+
+      Promise.all(charactersPromises)
+        .then((data) => data.map((character) => character.name))
+        .then((characters) => setCharacters(characters))
+        .catch((error) => console.error(error));
+    }
+  }, [props.showCharacters]);
+
+  return (
+    <li>
+      {props.title}
+      <button onClick={props.onClickButton}>Show movie characters</button>
+
+      {props.showCharacters && characters.length > 0 && (
+        <CharactersList characters={characters} />
+      )}
+    </li>
+  );
+};
+
+export { Movie };

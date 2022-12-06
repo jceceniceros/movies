@@ -8,6 +8,7 @@ const API_URL = 'https://swapi.dev/api/films';
 
 const MoviesList: React.FC = (props) => {
   const [movies, setMovies] = useState<MovieModel[]>([]);
+  const [episodeId, setEpisodeId] = useState(0);
 
   useEffect(() => {
     fetch(API_URL)
@@ -15,11 +16,22 @@ const MoviesList: React.FC = (props) => {
       .then((data) => data.results)
       .then((movies) => setMovies(movies))
       .catch((error) => console.error(error));
-  }, [])
+  }, []);
+
+  const handleClickButton = (episodeId: number) => () => {
+    setEpisodeId(episodeId);
+  };
 
   const moviesList = movies.map((movie) => (
-    <Movie title={movie.title} />
-  ))
+    <Movie
+      key={`movie-${movie.episode_id}`}
+      title={movie.title}
+      episodeId={movie.episode_id}
+      characters={movie.characters}
+      showCharacters={movie.episode_id === episodeId}
+      onClickButton={handleClickButton(movie.episode_id)}
+    />
+  ));
 
   return (
     <div className={styles.MoviesList}>
@@ -30,6 +42,4 @@ const MoviesList: React.FC = (props) => {
   );
 };
 
-export {
-  MoviesList
-}
+export { MoviesList };
